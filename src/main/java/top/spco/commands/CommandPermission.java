@@ -15,28 +15,29 @@
  */
 package top.spco.commands;
 
-import top.spco.SpCoBot;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * <p>
- * Created on 2023/7/18 0018 20:47
+ * Created on 2023/7/19 0019 2:37
  * <p>
  *
  * @author SpCo
  * @version 1.0
  * @since 1.0
  */
-public class Commands {
-    private static final Map<String, SpCoCommand> commandMap = new HashMap<>();
-    public static void register(SpCoCommand command) {
-        commandMap.put(command.getjKookCommand().getRootName(), command);
-        command.getjKookCommand().register(SpCoBot.getInstance());
+public enum CommandPermission {
+    BANNED_USER(0),
+    NORMAL_USER(1),
+    ADMIN(2),
+    BOT_ADMIN(3),
+    DEVELOPER(6);
+
+    private final int permission;
+
+    CommandPermission(int permission) {
+        this.permission = permission;
     }
 
-    public static Map<String, SpCoCommand> getCommandMap() {
-        return commandMap;
+    public int getPermission() {
+        return this.permission;
     }
 }

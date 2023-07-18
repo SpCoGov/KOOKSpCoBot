@@ -15,9 +15,16 @@
  */
 package top.spco.events;
 
+import org.apache.logging.log4j.Logger;
+import snw.jkook.entity.Guild;
+import snw.jkook.entity.Reaction;
+import snw.jkook.entity.User;
+import snw.jkook.entity.channel.Channel;
+import snw.jkook.entity.channel.VoiceChannel;
 import snw.jkook.event.EventHandler;
 import snw.jkook.event.Listener;
 import snw.jkook.event.user.*;
+import top.spco.utils.LogUtil;
 
 /**
  * <p>
@@ -29,39 +36,58 @@ import snw.jkook.event.user.*;
  * @since 1.0
  */
 public class UserEvents implements Listener {
+    private static final Logger LOGGER = LogUtil.getLogger();
+
     @EventHandler
     public void onJoinGuild(UserJoinGuildEvent event) {
-
+        User user = event.getUser();
+        Guild guild = event.getGuild();
+        LOGGER.info("{}({})加入了服务器{}({})", user.getName(), user.getId(), guild.getName(), guild.getId());
     }
 
     @EventHandler
     public void onLeaveGuild(UserLeaveGuildEvent event) {
-
+        User user = event.getUser();
+        Guild guild = event.getGuild();
+        LOGGER.info("{}({})离开了服务器{}({})", user.getName(), user.getId(), guild.getName(), guild.getId());
     }
 
     @EventHandler
     public void onJoinVoiceChannel(UserJoinVoiceChannelEvent event) {
-
+        User user = event.getUser();
+        VoiceChannel channel = event.getChannel();
+        Guild guild = event.getChannel().getGuild();
+        LOGGER.info("{}({})进入了{}({})的语音频道{}({})", user.getName(), user.getId(), guild.getName(), guild.getId(), channel.getName(), channel.getId());
     }
 
     @EventHandler
     public void onLeaveVoiceChannel(UserLeaveVoiceChannelEvent event) {
-
-    }
-
-    @EventHandler
-    public void onRemoveReaction(UserRemoveReactionEvent event) {
-
+        User user = event.getUser();
+        VoiceChannel channel = event.getChannel();
+        Guild guild = event.getChannel().getGuild();
+        LOGGER.info("{}({})离开了{}({})的语音频道{}({})", user.getName(), user.getId(), guild.getName(), guild.getId(), channel.getName(), channel.getId());
     }
 
     @EventHandler
     public void onAddReaction(UserAddReactionEvent event) {
+        User user = event.getUser();
+        Reaction reaction = event.getReaction();
+        LOGGER.info("{}({})回应[{}({})]了消息{}", user.getName(), user.getId(), reaction.getEmoji().getName(), reaction.getEmoji().getId(), reaction.getMessageId());
+    }
 
+    @EventHandler
+    public void onRemoveReaction(UserRemoveReactionEvent event) {
+        User user = event.getUser();
+        Reaction reaction = event.getReaction();
+        LOGGER.info("{}({})在消息{}上移除了回应[{}({})]", user.getName(), user.getId(), reaction.getMessageId(), reaction.getEmoji().getName(), reaction.getEmoji().getId());
     }
 
     @EventHandler
     public void onClickButton(UserClickButtonEvent event) {
-
+        String value = event.getValue();
+        User user = event.getUser();
+        Channel channel = event.getChannel();
+        LOGGER.info("{}({})点击了{}({})中消息{}的值为{}的按钮", user.getName(), user.getId(), channel.getName(), channel.getId(), event.getMessageId(), value);
     }
 
     @EventHandler

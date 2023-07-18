@@ -17,7 +17,6 @@ package top.spco.commands;
 
 import snw.jkook.command.JKookCommand;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,9 +31,22 @@ import java.util.Map;
 public abstract class SpCoCommand {
     private final JKookCommand jKookCommand;
     private final Map<String, String> helpList;
+    private final CommandPermission needPermission;
+
+    public SpCoCommand(JKookCommand jKookCommand, Map<String, String> helpList, CommandPermission needPermission) {
+        this.jKookCommand = jKookCommand;
+        this.helpList = helpList;
+        this.needPermission = needPermission;
+    }
+
     public SpCoCommand(JKookCommand jKookCommand, Map<String, String> helpList) {
         this.jKookCommand = jKookCommand;
         this.helpList = helpList;
+        this.needPermission = CommandPermission.NORMAL_USER;
+    }
+
+    public CommandPermission getNeedPermission() {
+        return needPermission;
     }
 
     public Map<String, String> getHelpList() {

@@ -16,7 +16,6 @@
 package top.spco.events;
 
 import org.apache.logging.log4j.Logger;
-import org.slf4j.spi.LocationAwareLogger;
 import snw.jkook.entity.Guild;
 import snw.jkook.entity.User;
 import snw.jkook.entity.channel.Channel;
@@ -26,6 +25,7 @@ import snw.jkook.event.channel.*;
 import snw.jkook.message.Message;
 import top.spco.SpCoBot;
 import top.spco.utils.LogUtil;
+import top.spco.utils.Util;
 
 /**
  * <p>
@@ -40,27 +40,37 @@ public class ChannelEvents implements Listener {
     private static final Logger LOGGER = LogUtil.getLogger();
     @EventHandler
     public void onCrate(ChannelCreateEvent event) {
-
+        Channel channel = event.getChannel();
+        Guild guild = channel.getGuild();
+        LOGGER.info("{}({})中被创建了新频道{}({})", guild.getName(), guild.getId(), channel.getName(), channel.getId());
     }
 
     @EventHandler
     public void onDelete(ChannelDeleteEvent event) {
-
+        Channel channel = SpCoBot.getInstance().getCore().getHttpAPI().getChannel(event.getChannelId());
+        Guild guild = channel.getGuild();
+        LOGGER.info("{}({})的{}({})被删除", guild.getName(), guild.getId(), channel.getName(), channel.getId());
     }
 
     @EventHandler
     public void onInfoUpdate(ChannelDeleteEvent event) {
-
+        Channel channel = SpCoBot.getInstance().getCore().getHttpAPI().getChannel(event.getChannelId());
+        Guild guild = channel.getGuild();
+        LOGGER.info("{}({})的{}({})的频道消息被更新", guild.getName(), guild.getId(), channel.getName(), channel.getId());
     }
 
     @EventHandler
     public void onMessageDelete(ChannelMessageDeleteEvent event) {
-
+        Channel channel = event.getChannel();
+        Guild guild = channel.getGuild();
+        LOGGER.info("{}({})的{}({})中的消息({})被删除", guild.getName(), guild.getId(), channel.getName(), channel.getId(), event.getMessageId());
     }
 
     @EventHandler
     public void onMessageUnpin(ChannelMessageUnpinEvent event) {
-
+        Channel channel = event.getChannel();
+        Guild guild = channel.getGuild();
+        LOGGER.info("{}({})的{}({})中的消息({})被{}取消置顶", guild.getName(), guild.getId(), channel.getName(), channel.getId(), event.getMessageId(), event.getOperator().getName());
     }
 
     @EventHandler
@@ -71,12 +81,15 @@ public class ChannelEvents implements Listener {
         Message message = event.getMessage();
         String content = message.getComponent().clone().toString();
         User sender = message.getSender();
-
         LOGGER.info("从{}({})的{}({}), 收到{}({})发送的消息: {}", guild.getName(), guild.getId(), channel.getName(), channel.getId(), sender.getName(), sender.getId(), content);
+        Util.isNewUser(sender, true);
     }
 
     @EventHandler
     public void onMessagePin(ChannelMessagePinEvent event) {
+        Channel channel = event.getChannel();
+        Guild guild = channel.getGuild();
+        LOGGER.info("{}({})的{}({})中的消息({})被{}置顶", guild.getName(), guild.getId(), channel.getName(), channel.getId(), event.getMessageId(), event.getOperator().getName());
 
     }
 
@@ -86,8 +99,6 @@ public class ChannelEvents implements Listener {
         Guild guild = channel.getGuild();
         String message = event.getContent();
         String messageId = event.getMessageId();
-        LOGGER.info("用户将消息({})修改为{}", messageId, message);
+        LOGGER.info("用户将消息({})修改为: {}", messageId, message);
     }
-
-
 }

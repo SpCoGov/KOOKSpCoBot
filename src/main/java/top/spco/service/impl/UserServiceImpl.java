@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package top.spco.commands;
+package top.spco.service.impl;
 
+import snw.jkook.entity.User;
 import top.spco.SpCoBot;
-
-import java.util.HashMap;
-import java.util.Map;
+import top.spco.domain.BotUser;
+import top.spco.service.UserService;
 
 /**
  * <p>
- * Created on 2023/7/18 0018 20:47
+ * Created on 2023/7/19 0019 3:12
  * <p>
  *
  * @author SpCo
  * @version 1.0
  * @since 1.0
  */
-public class Commands {
-    private static final Map<String, SpCoCommand> commandMap = new HashMap<>();
-    public static void register(SpCoCommand command) {
-        commandMap.put(command.getjKookCommand().getRootName(), command);
-        command.getjKookCommand().register(SpCoBot.getInstance());
-    }
-
-    public static Map<String, SpCoCommand> getCommandMap() {
-        return commandMap;
+public class UserServiceImpl implements UserService {
+    @Override
+    public BotUser getBotUser(User user) {
+        String id = user.getId();
+        BotUser botUser = new BotUser(id,
+                        SpCoBot.getDatabase().selectInt("user", "permission", "id", id),
+                        SpCoBot.getDatabase().selectInt("user", "smf_coin", "id", id));
+        botUser.setUser(user);
+        return botUser;
     }
 }

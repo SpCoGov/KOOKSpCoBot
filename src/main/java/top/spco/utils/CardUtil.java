@@ -23,6 +23,8 @@ import snw.jkook.message.component.card.element.PlainTextElement;
 import snw.jkook.message.component.card.module.DividerModule;
 import snw.jkook.message.component.card.module.HeaderModule;
 import snw.jkook.message.component.card.module.SectionModule;
+import top.spco.commands.SpCoCommand;
+import top.spco.domain.BotUser;
 
 /**
  * <p>
@@ -68,12 +70,36 @@ public class CardUtil {
         return cardBuilder.build();
     }
 
+    public static MultipleCardComponent headerAndSections(Theme theme, String header, String... sections) {
+        CardBuilder cardBuilder = new CardBuilder()
+                .setSize(Size.LG)
+                .setColor("#4bc1ff")
+                .setTheme(theme)
+                .addModule(new HeaderModule(new PlainTextElement(header, false)))
+                .addModule(DividerModule.INSTANCE);
+        for (String section : sections) {
+            cardBuilder.addModule(new SectionModule(section, true));
+        }
+        return cardBuilder.build();
+    }
+
     public static MultipleCardComponent header(String header) {
         return new CardBuilder()
                 .setColor("#4bc1ff")
                 .setSize(Size.LG)
                 .setTheme(Theme.PRIMARY)
                 .addModule(new HeaderModule(new PlainTextElement(header, false)))
+                .build();
+    }
+
+    public static MultipleCardComponent insufficientPermission(SpCoCommand command, BotUser sender) {
+        return new CardBuilder()
+                .setSize(Size.LG)
+                .setTheme(Theme.DANGER)
+                .addModule(new HeaderModule(new PlainTextElement("权限不足", false)))
+                .addModule(DividerModule.INSTANCE)
+                .addModule(new SectionModule("抱歉, 您没有足够的权限来执行此命令", true))
+                .addModule(new SectionModule(String.format("`%s`命令至少需要权限等级**%d**, 而您的权限等级为**%d**", command.getjKookCommand().getRootName(), command.getNeedPermission().getPermission(), sender.getPermission())))
                 .build();
     }
 }

@@ -13,30 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package top.spco.commands;
+package top.spco.service;
 
-import top.spco.SpCoBot;
-
-import java.util.HashMap;
-import java.util.Map;
+import snw.jkook.entity.User;
+import top.spco.domain.BotUser;
 
 /**
  * <p>
- * Created on 2023/7/18 0018 20:47
+ * Created on 2023/7/19 0019 3:11
  * <p>
  *
  * @author SpCo
  * @version 1.0
  * @since 1.0
  */
-public class Commands {
-    private static final Map<String, SpCoCommand> commandMap = new HashMap<>();
-    public static void register(SpCoCommand command) {
-        commandMap.put(command.getjKookCommand().getRootName(), command);
-        command.getjKookCommand().register(SpCoBot.getInstance());
-    }
-
-    public static Map<String, SpCoCommand> getCommandMap() {
-        return commandMap;
-    }
+public interface UserService {
+    BotUser getBotUser(User user);
 }

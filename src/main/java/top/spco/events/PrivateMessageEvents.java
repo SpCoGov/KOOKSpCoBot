@@ -15,11 +15,14 @@
  */
 package top.spco.events;
 
+import org.apache.logging.log4j.Logger;
+import snw.jkook.entity.User;
 import snw.jkook.event.EventHandler;
 import snw.jkook.event.Listener;
 import snw.jkook.event.pm.PrivateMessageDeleteEvent;
 import snw.jkook.event.pm.PrivateMessageReceivedEvent;
 import snw.jkook.event.pm.PrivateMessageUpdateEvent;
+import top.spco.utils.LogUtil;
 
 /**
  * <p>
@@ -31,19 +34,22 @@ import snw.jkook.event.pm.PrivateMessageUpdateEvent;
  * @since 1.0
  */
 public class PrivateMessageEvents implements Listener {
+    private static final Logger LOGGER = LogUtil.getLogger();
     @EventHandler
     public void messageReceive(PrivateMessageReceivedEvent event) {
-
+        User user = event.getUser();
+        LOGGER.info("收到了{}({})发来的私聊消息: {}", user.getName(), user.getId(), event.getMessage().getComponent());
     }
 
     @EventHandler
     public void messageDelete(PrivateMessageDeleteEvent event) {
-
+        LOGGER.info("私聊消息{}被删除", event.getMessageId());
     }
 
     @EventHandler
     public void messageUpdate(PrivateMessageUpdateEvent event) {
-
+        String content = event.getContent();
+        LOGGER.info("私聊消息{}被修改为: " + content, event.getMessageId());
     }
 
 

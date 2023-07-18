@@ -15,28 +15,33 @@
  */
 package top.spco.commands;
 
-import top.spco.SpCoBot;
+import snw.jkook.command.JKookCommand;
+import top.spco.utils.Util;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * <p>
- * Created on 2023/7/18 0018 20:47
+ * Created on 2023/7/19 0019 4:55
  * <p>
  *
  * @author SpCo
  * @version 1.0
  * @since 1.0
  */
-public class Commands {
-    private static final Map<String, SpCoCommand> commandMap = new HashMap<>();
-    public static void register(SpCoCommand command) {
-        commandMap.put(command.getjKookCommand().getRootName(), command);
-        command.getjKookCommand().register(SpCoBot.getInstance());
+public class GetMeCommand extends SpCoCommand {
+    private static final Map<String, String> helpList = new HashMap<>();
+
+    static {
+        helpList.put("getme", "获取个人信息");
     }
 
-    public static Map<String, SpCoCommand> getCommandMap() {
-        return commandMap;
+    public GetMeCommand() {
+        super(new JKookCommand("getme", '/').executesUser((sender, arguments, message) -> {
+            if (message == null) return;
+            Util.isNewUser(sender, true);
+
+        }), helpList);
     }
 }

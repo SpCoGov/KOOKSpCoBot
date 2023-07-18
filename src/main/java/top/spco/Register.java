@@ -15,10 +15,7 @@
  */
 package top.spco;
 
-import top.spco.commands.Commands;
-import top.spco.commands.HelpCommand;
-import top.spco.commands.InfoCommand;
-import top.spco.commands.RollCommand;
+import top.spco.commands.*;
 import top.spco.events.ChannelEvents;
 import top.spco.events.PrivateMessageEvents;
 import top.spco.events.UserEvents;
@@ -45,5 +42,6 @@ public class Register {
         Commands.register(new RollCommand());
         Commands.register(new InfoCommand());
         Commands.register(new HelpCommand());
+        Commands.register(new SetCommand());
     }
 }
