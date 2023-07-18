@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'top.spco'
+version = '1.1.1'
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow, project.configurations.runtimeClasspath]
+    manifest {
+        attributes 'Main-Class': 'top.spco.Main'
+    }
+    mergeServiceFiles()
+}
+
+dependencies {
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.20.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.20.0'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+    implementation group: 'com.github.SNWCreations', name: 'JKook', version:'0.49.1'
+    implementation group: 'org.jetbrains', name: 'annotations', version: '24.0.1'
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
