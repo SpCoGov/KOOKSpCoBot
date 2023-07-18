@@ -15,7 +15,6 @@
  */
 package top.spco.commands;
 
-import snw.jkook.command.JKookCommand;
 import snw.jkook.message.component.card.Theme;
 import top.spco.utils.CardUtil;
 
@@ -40,37 +39,34 @@ public class HelpCommand extends SpCoCommand {
     }
 
     public HelpCommand() {
-        super(new JKookCommand("help", '/').executesUser(
-                (sender, arguments, message) -> {
-                    if (message == null) return;
-                    if (arguments.length == 0) {
-                        List<String> sections = new ArrayList<>();
-                        for (Map.Entry<String, SpCoCommand> entry : Commands.getCommandMap().entrySet()) {
-                            for (Map.Entry<String, String> entry1 : entry.getValue().getHelpList().entrySet()) {
-                                sections.add(String.format("`%s`", entry1.getKey()) + " " + entry1.getValue());
-                            }
-                        }
-                        String[] array = new String[sections.size()];
-                        array = sections.toArray(array);
-                        message.reply(CardUtil.headerAndSections("SpCoBot 命令帮助", array));
-                    } else if (arguments.length == 1) {
-                        String command = arguments[0].toString().toLowerCase(Locale.ENGLISH);
-                        if (!Commands.getCommandMap().containsKey(command)) {
-                            message.reply(CardUtil.headerAndSection(Theme.WARNING, command + " 的命令帮助", String.format("没有找到`%s`命令", command)));
-                            return;
-                        }
-                        SpCoCommand s = Commands.getCommandMap().get(command);
-                        List<String> sections = new ArrayList<>();
-                        for (Map.Entry<String, String> entry : s.getHelpList().entrySet()) {
-                            sections.add(String.format("`%s`", entry.getKey()) + " " + entry.getValue());
-                        }
-                        String[] array = new String[sections.size()];
-                        array = sections.toArray(array);
-                        message.reply(CardUtil.headerAndSections(command + " 的命令帮助", array));
-                    } else {
-                        message.reply(CardUtil.headerAndSection(Theme.WARNING, "告知: 提交参数错误", "正确格式: `/help <命令>`"));
+        super("help", (sender, arguments, message) -> {
+            if (arguments.length == 0) {
+                List<String> sections = new ArrayList<>();
+                for (Map.Entry<String, SpCoCommand> entry : Commands.getCommandMap().entrySet()) {
+                    for (Map.Entry<String, String> entry1 : entry.getValue().getHelpList().entrySet()) {
+                        sections.add(String.format("`%s`", entry1.getKey()) + " " + entry1.getValue());
                     }
                 }
-        ).addAlias("?"), helpList);
+                String[] array = new String[sections.size()];
+                array = sections.toArray(array);
+                message.reply(CardUtil.headerAndSections("SpCoBot 命令帮助", array));
+            } else if (arguments.length == 1) {
+                String command = arguments[0].toString().toLowerCase(Locale.ENGLISH);
+                if (!Commands.getCommandMap().containsKey(command)) {
+                    message.reply(CardUtil.headerAndSection(Theme.WARNING, command + " 的命令帮助", String.format("没有找到`%s`命令", command)));
+                    return;
+                }
+                SpCoCommand s = Commands.getCommandMap().get(command);
+                List<String> sections = new ArrayList<>();
+                for (Map.Entry<String, String> entry : s.getHelpList().entrySet()) {
+                    sections.add(String.format("`%s`", entry.getKey()) + " " + entry.getValue());
+                }
+                String[] array = new String[sections.size()];
+                array = sections.toArray(array);
+                message.reply(CardUtil.headerAndSections(command + " 的命令帮助", array));
+            } else {
+                message.reply(CardUtil.headerAndSection(Theme.WARNING, "告知: 提交参数错误", "正确格式: `/help <命令>`"));
+            }
+        }, helpList, CommandPermission.NORMAL_USER, "?");
     }
 }

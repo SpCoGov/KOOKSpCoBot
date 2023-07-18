@@ -15,28 +15,19 @@
  */
 package top.spco.commands;
 
-import top.spco.utils.Util;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
+import snw.jkook.entity.User;
+import snw.jkook.message.Message;
 
 /**
  * <p>
- * Created on 2023/7/19 0019 4:55
+ * Created on 2023/7/19 0019 6:20
  * <p>
  *
  * @author SpCo
  * @version 1.0
  * @since 1.0
  */
-public class GetMeCommand extends SpCoCommand {
-    private static final Map<String, String> helpList = new HashMap<>();
-
-    static {
-        helpList.put("getme", "获取个人信息");
-    }
-
-    public GetMeCommand() {
-        super("getme", (sender, arguments, message) -> Util.isNewUser(sender, true), helpList);
-    }
+public interface SpCoCommandExecuter {
+    void onCommand(User sender, Object[] arguments, @NotNull Message message);
 }

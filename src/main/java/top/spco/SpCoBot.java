@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 import snw.jkook.HttpAPI;
 import snw.jkook.entity.channel.TextChannel;
 import snw.jkook.plugin.BasePlugin;
+import top.spco.sqlite.Database;
 import top.spco.utils.CardUtil;
 import top.spco.utils.LogUtil;
 

@@ -43,5 +43,6 @@ public class Register {
         Commands.register(new InfoCommand());
         Commands.register(new HelpCommand());
         Commands.register(new SetCommand());
+        Commands.register(new GetMeCommand());
     }
 }

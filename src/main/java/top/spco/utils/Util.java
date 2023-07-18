@@ -39,12 +39,10 @@ public class Util {
         }
     }
 
-    public static boolean isNewUser(User user, boolean register) {
+    public static void isNewUser(User user, boolean register) {
         if (SpCoBot.getDatabase().selectInt("user", "smf_coin", "id", user.getId()) == null) {
             if (register)
                 SpCoBot.getDatabase().insertData("insert into user(id,smf_coin) values (?,?)", user.getId(), 0);
-            return true;
         }
-        return false;
     }
 }

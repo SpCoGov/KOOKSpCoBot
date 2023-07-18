@@ -15,12 +15,9 @@
  */
 package top.spco.commands;
 
-import snw.jkook.command.JKookCommand;
 import top.spco.utils.CardUtil;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,17 +31,14 @@ import java.util.Map;
  */
 public class InfoCommand extends SpCoCommand {
     private static final Map<String, String> helpList = new HashMap<>();
+
     static {
         helpList.put("info", "获取机器人运行信息");
         helpList.put("i", " -> /info");
     }
+
     public InfoCommand() {
-        super(new JKookCommand("info", '/').executesUser(
-                (sender, arguments, message) -> {
-                    if (message == null) return;
-                    message.reply(CardUtil.header("告知: 机器人正常运行中"));
-                }
-        ).addAlias("i") ,helpList);
+        super("info", (sender, arguments, message) -> message.reply(CardUtil.header("告知: 机器人正常运行中")), helpList, CommandPermission.NORMAL_USER, "i");
     }
 }
 

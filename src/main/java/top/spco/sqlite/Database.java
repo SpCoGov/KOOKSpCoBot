@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package top.spco;
+package top.spco.sqlite;
 
 import cn.hutool.core.util.ObjectUtil;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.Logger;
+import top.spco.SpCoBot;
 import top.spco.utils.LogUtil;
 
 import java.io.File;

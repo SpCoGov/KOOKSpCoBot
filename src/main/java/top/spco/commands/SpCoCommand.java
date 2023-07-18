@@ -16,6 +16,9 @@
 package top.spco.commands;
 
 import snw.jkook.command.JKookCommand;
+import top.spco.service.UserService;
+import top.spco.service.impl.UserServiceImpl;
+import top.spco.utils.CardUtil;
 
 import java.util.Map;
 
@@ -29,20 +32,41 @@ import java.util.Map;
  * @since 1.0
  */
 public abstract class SpCoCommand {
+    private final String rootName;
     private final JKookCommand jKookCommand;
     private final Map<String, String> helpList;
     private final CommandPermission needPermission;
+    private static final UserService userService = new UserServiceImpl();
 
-    public SpCoCommand(JKookCommand jKookCommand, Map<String, String> helpList, CommandPermission needPermission) {
-        this.jKookCommand = jKookCommand;
+    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList) {
+        this.rootName = rootName;
+        this.needPermission = CommandPermission.NORMAL_USER;
         this.helpList = helpList;
-        this.needPermission = needPermission;
+        this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
+            if (message ==null) return;
+            if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
+                message.reply(CardUtil.insufficientPermission(new SetCommand(), userService.getBotUser(sender)));
+                return;
+            }
+            executer.onCommand(sender, arguments, message);
+        });
     }
 
-    public SpCoCommand(JKookCommand jKookCommand, Map<String, String> helpList) {
-        this.jKookCommand = jKookCommand;
+    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList, CommandPermission needPermission, String... alias) {
+        this.rootName = rootName;
+        this.needPermission = needPermission;
         this.helpList = helpList;
-        this.needPermission = CommandPermission.NORMAL_USER;
+        this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
+            if (message ==null) return;
+            if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
+                message.reply(CardUtil.insufficientPermission(new SetCommand(), userService.getBotUser(sender)));
+                return;
+            }
+            executer.onCommand(sender, arguments, message);
+        });
+        for (String alia : alias) {
+            this.jKookCommand.addAlias(alia);
+        }
     }
 
     public CommandPermission getNeedPermission() {
