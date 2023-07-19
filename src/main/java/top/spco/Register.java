@@ -39,10 +39,12 @@ public class Register {
     }
 
     public static void commandRegister() {
-        Commands.register(new RollCommand());
-        Commands.register(new InfoCommand());
-        Commands.register(new HelpCommand());
-        Commands.register(new SetCommand());
         Commands.register(new GetMeCommand());
+        Commands.register(new HelpCommand());
+        Commands.register(new InfoCommand());
+        Commands.register(new RollCommand());
+        Commands.register(new SetCommand());
+        Commands.register(new SignCommand());
+
     }
 }

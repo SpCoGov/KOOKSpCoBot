@@ -19,6 +19,11 @@ package top.spco.domain;
 import snw.jkook.entity.User;
 import top.spco.SpCoBot;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * <p>
  * Created on 2023/7/19 0019 2:20
@@ -50,10 +55,12 @@ public class BotUser {
     }
 
     public int getPermission() {
+        smfCoin = SpCoBot.getDatabase().selectInt("user", "permission", "id", id);
         return permission;
     }
 
     public int getSmfCoin() {
+        smfCoin = SpCoBot.getDatabase().selectInt("user", "smf_coin", "id", id);
         return smfCoin;
     }
 
@@ -69,5 +76,17 @@ public class BotUser {
     public void setPermission(int permission) {
         this.permission = permission;
         SpCoBot.getDatabase().update("update user set permission=? where id=?", this.permission, id);
+    }
+
+    public int sign() {
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Shanghai"));
+        String signDate = SpCoBot.getDatabase().select("user", "sign", "id", id);
+        if (Objects.equals(signDate, today.toString())) {
+            return -1;
+        }
+        SpCoBot.getDatabase().update("update user set sign=? where id=?", today, id);
+        int randomNumber = ThreadLocalRandom.current().nextInt(10, 101);
+        setSmfCoin(getSmfCoin() + randomNumber);
+        return randomNumber;
     }
 }

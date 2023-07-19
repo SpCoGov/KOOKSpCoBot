@@ -99,7 +99,7 @@ public class Database {
         if (conn == null || conn.isClosed()) {
             openConn();
         }
-        String createHeadTableSql = "CREATE TABLE IF NOT EXISTS user (id TEXT NOT NULL PRIMARY KEY, smf_coin INTEGER DEFAULT 0, permission INTEGER DEFAULT 1)";
+        String createHeadTableSql = "CREATE TABLE IF NOT EXISTS user (id TEXT NOT NULL PRIMARY KEY, smf_coin INTEGER DEFAULT 0, permission INTEGER DEFAULT 1, sign TEXT DEFAULT '从未签到过')";
 
         try (PreparedStatement stmt = conn.prepareStatement(createHeadTableSql)) {
             stmt.execute();
