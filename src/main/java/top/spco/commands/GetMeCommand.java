@@ -15,6 +15,7 @@
  */
 package top.spco.commands;
 
+import top.spco.utils.CardUtil;
 import top.spco.utils.Util;
 
 import java.util.HashMap;
@@ -37,6 +38,9 @@ public class GetMeCommand extends SpCoCommand {
     }
 
     public GetMeCommand() {
-        super("getme", (sender, arguments, message) -> Util.isNewUser(sender, true), helpList);
+        super("getme", (sender, arguments, message) -> {
+            Util.isNewUser(sender, true);
+            message.reply(CardUtil.userInfo(sender));
+        }, helpList);
     }
 }

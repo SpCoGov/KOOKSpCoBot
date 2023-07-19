@@ -19,6 +19,7 @@ import snw.jkook.entity.User;
 import top.spco.SpCoBot;
 import top.spco.domain.BotUser;
 import top.spco.service.UserService;
+import top.spco.utils.Util;
 
 /**
  * <p>
@@ -32,6 +33,7 @@ import top.spco.service.UserService;
 public class UserServiceImpl implements UserService {
     @Override
     public BotUser getBotUser(User user) {
+        Util.isNewUser(user, true);
         String id = user.getId();
         BotUser botUser = new BotUser(id,
                         SpCoBot.getDatabase().selectInt("user", "permission", "id", id),
