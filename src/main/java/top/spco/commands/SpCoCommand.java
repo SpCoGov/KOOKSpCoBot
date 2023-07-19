@@ -43,7 +43,7 @@ public abstract class SpCoCommand {
         this.needPermission = CommandPermission.NORMAL_USER;
         this.helpList = helpList;
         this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
-            if (message ==null) return;
+            if (message == null) return;
             if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
                 message.reply(CardUtil.insufficientPermission(new SetCommand(), userService.getBotUser(sender)));
                 return;
@@ -57,7 +57,7 @@ public abstract class SpCoCommand {
         this.needPermission = needPermission;
         this.helpList = helpList;
         this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
-            if (message ==null) return;
+            if (message == null) return;
             if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
                 message.reply(CardUtil.insufficientPermission(new SetCommand(), userService.getBotUser(sender)));
                 return;
@@ -67,6 +67,20 @@ public abstract class SpCoCommand {
         for (String alia : alias) {
             this.jKookCommand.addAlias(alia);
         }
+    }
+
+    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList, CommandPermission needPermission) {
+        this.rootName = rootName;
+        this.needPermission = needPermission;
+        this.helpList = helpList;
+        this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
+            if (message == null) return;
+            if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
+                message.reply(CardUtil.insufficientPermission(new SetCommand(), userService.getBotUser(sender)));
+                return;
+            }
+            executer.onCommand(sender, arguments, message);
+        });
     }
 
     public CommandPermission getNeedPermission() {

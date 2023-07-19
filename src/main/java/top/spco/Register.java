@@ -45,6 +45,7 @@ public class Register {
         Commands.register(new RollCommand());
         Commands.register(new SetCommand());
         Commands.register(new SignCommand());
+        Commands.register(new WarnCommand());
 
     }
 }

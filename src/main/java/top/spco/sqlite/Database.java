@@ -41,6 +41,7 @@ public class Database {
     private ResultSet rs;
 
     private static final Logger LOGGER = LogUtil.getLogger();
+
     public Database() {
 
         try {
@@ -99,10 +100,13 @@ public class Database {
         if (conn == null || conn.isClosed()) {
             openConn();
         }
-        String createHeadTableSql = "CREATE TABLE IF NOT EXISTS user (id TEXT NOT NULL PRIMARY KEY, smf_coin INTEGER DEFAULT 0, permission INTEGER DEFAULT 1, sign TEXT DEFAULT '从未签到过')";
+        String createUserTableSql = "CREATE TABLE IF NOT EXISTS user (id TEXT NOT NULL PRIMARY KEY, smf_coin INTEGER DEFAULT 0, permission INTEGER DEFAULT 1, sign TEXT DEFAULT '从未签到过', warn INTEGER DEFAULT 0)";
+        String createGuildTableSql = "CREATE TABLE IF NOT EXISTS guild (id TEXT NOT NULL PRIMARY KEY, warn INTEGER DEFAULT 3)";
 
-        try (PreparedStatement stmt = conn.prepareStatement(createHeadTableSql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(createUserTableSql);
+             PreparedStatement stmt2 = conn.prepareStatement(createGuildTableSql)) {
             stmt.execute();
+            stmt2.execute();
         }
     }
 

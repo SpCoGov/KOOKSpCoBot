@@ -15,6 +15,7 @@
  */
 package top.spco.utils;
 
+import snw.jkook.entity.Guild;
 import snw.jkook.entity.User;
 import top.spco.SpCoBot;
 
@@ -43,6 +44,13 @@ public class Util {
         if (SpCoBot.getDatabase().selectInt("user", "smf_coin", "id", user.getId()) == null) {
             if (register)
                 SpCoBot.getDatabase().insertData("insert into user(id,smf_coin) values (?,?)", user.getId(), 0);
+        }
+    }
+
+    public static void isNewGuild(Guild guild, boolean register) {
+        if (SpCoBot.getDatabase().selectInt("guild", "warn", "id", guild.getId()) == null) {
+            if (register)
+                SpCoBot.getDatabase().insertData("insert into guild(id,warn) values (?,?)", guild.getId(), 3);
         }
     }
 }
