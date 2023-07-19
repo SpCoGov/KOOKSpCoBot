@@ -45,7 +45,7 @@ public abstract class SpCoCommand {
         this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
             if (message == null) return;
             if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
-                message.reply(CardUtil.insufficientPermission(new SetCommand(), userService.getBotUser(sender)));
+                message.reply(CardUtil.insufficientPermission(rootName, needPermission, userService.getBotUser(sender)));
                 return;
             }
             executer.onCommand(sender, arguments, message);
@@ -59,7 +59,7 @@ public abstract class SpCoCommand {
         this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
             if (message == null) return;
             if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
-                message.reply(CardUtil.insufficientPermission(new SetCommand(), userService.getBotUser(sender)));
+                message.reply(CardUtil.insufficientPermission(rootName, needPermission, userService.getBotUser(sender)));
                 return;
             }
             executer.onCommand(sender, arguments, message);
@@ -76,7 +76,7 @@ public abstract class SpCoCommand {
         this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
             if (message == null) return;
             if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
-                message.reply(CardUtil.insufficientPermission(new SetCommand(), userService.getBotUser(sender)));
+                message.reply(CardUtil.insufficientPermission(rootName, needPermission, userService.getBotUser(sender)));
                 return;
             }
             executer.onCommand(sender, arguments, message);

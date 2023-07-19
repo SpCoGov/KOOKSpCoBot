@@ -41,7 +41,6 @@ import java.util.regex.Pattern;
  * @since 1.0
  */
 public class SetCommand extends SpCoCommand {
-    private static final Logger LOGGER = LogUtil.getLogger();
     private static final UserService userService = new UserServiceImpl();
     private static final Map<String, String> helpList = new HashMap<>();
 

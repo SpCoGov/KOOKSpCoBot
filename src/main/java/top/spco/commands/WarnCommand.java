@@ -15,6 +15,11 @@
  */
 package top.spco.commands;
 
+import cn.hutool.core.lang.Pair;
+import snw.jkook.message.component.card.Theme;
+import top.spco.utils.CardUtil;
+import top.spco.utils.Util;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,16 +32,27 @@ import java.util.Map;
  * @version 1.0
  * @since 1.0
  */
-public class WarnCommand extends SpCoCommand{
+public class WarnCommand extends SpCoCommand {
     private static final Map<String, String> helpList = new HashMap<>();
+
     static {
         helpList.put("warn [目标]", "警告用户一次");
         helpList.put("warn [目标] <值>", "设置用户的警告次数");
         helpList.put("warn max <值>", "设置此服务器最大警告次数(设置为0则不进行操作)");
     }
+
     public WarnCommand() {
         super("warn", (sender, arguments, message) -> {
-
+            Pair<Boolean, Object> userReturn;
+            userReturn = Util.getUserByCommand(0, 1, arguments, message);
+            if (!userReturn.getKey()) {
+                if (userReturn.getValue() == null) {
+                    message.reply(CardUtil.headerAndSections(Theme.WARNING, "告知: 提交参数错误", message.getComponent() + " <--[HERE]"));
+                    return;
+                }
+                message.reply(CardUtil.headerAndSections(Theme.WARNING, "告知: 提交参数错误", userReturn.getValue().toString()));
+                return;
+            }
         }, helpList, CommandPermission.ADMIN);
     }
 }

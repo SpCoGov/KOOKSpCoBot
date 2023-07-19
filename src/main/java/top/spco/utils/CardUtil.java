@@ -27,7 +27,7 @@ import snw.jkook.message.component.card.module.DividerModule;
 import snw.jkook.message.component.card.module.HeaderModule;
 import snw.jkook.message.component.card.module.SectionModule;
 import snw.jkook.message.component.card.structure.Paragraph;
-import top.spco.commands.SpCoCommand;
+import top.spco.commands.CommandPermission;
 import top.spco.domain.BotUser;
 import top.spco.service.UserService;
 import top.spco.service.impl.UserServiceImpl;
@@ -103,14 +103,14 @@ public class CardUtil {
                 .build();
     }
 
-    public static MultipleCardComponent insufficientPermission(SpCoCommand command, BotUser sender) {
+    public static MultipleCardComponent insufficientPermission(String rootName, CommandPermission commandPermission, BotUser sender) {
         return new CardBuilder()
                 .setSize(Size.LG)
                 .setTheme(Theme.DANGER)
                 .addModule(new HeaderModule(new PlainTextElement("权限不足", false)))
                 .addModule(DividerModule.INSTANCE)
                 .addModule(new SectionModule("抱歉, 您没有足够的权限来执行此命令", true))
-                .addModule(new SectionModule(String.format("`%s`命令至少需要权限等级**%d**, 而您的权限等级为**%d**", command.getjKookCommand().getRootName(), command.getNeedPermission().getPermission(), sender.getPermission())))
+                .addModule(new SectionModule(String.format("`%s`命令至少需要权限等级**%d**, 而您的权限等级为**%d**", rootName, commandPermission.getPermission(), sender.getPermission())))
                 .build();
     }
 
