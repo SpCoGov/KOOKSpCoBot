@@ -16,7 +16,17 @@
 package top.spco.commands;
 
 import cn.hutool.core.lang.Pair;
+import org.jetbrains.annotations.NotNull;
+import snw.jkook.entity.User;
+import snw.jkook.message.Message;
+import snw.jkook.message.TextChannelMessage;
 import snw.jkook.message.component.card.Theme;
+import top.spco.domain.BotGuild;
+import top.spco.domain.BotUser;
+import top.spco.service.GuildService;
+import top.spco.service.UserService;
+import top.spco.service.impl.GuildServiceImpl;
+import top.spco.service.impl.UserServiceImpl;
 import top.spco.utils.CardUtil;
 import top.spco.utils.Util;
 
@@ -32,7 +42,9 @@ import java.util.Map;
  * @version 1.0
  * @since 1.0
  */
-public class WarnCommand extends SpCoCommand {
+public class WarnCommand extends SpCoTextChannelCommand {
+    private static final UserService userService = new UserServiceImpl();
+    private static final GuildService guildService = new GuildServiceImpl();
     private static final Map<String, String> helpList = new HashMap<>();
 
     static {
@@ -43,16 +55,7 @@ public class WarnCommand extends SpCoCommand {
 
     public WarnCommand() {
         super("warn", (sender, arguments, message) -> {
-            Pair<Boolean, Object> userReturn;
-            userReturn = Util.getUserByCommand(0, 1, arguments, message);
-            if (!userReturn.getKey()) {
-                if (userReturn.getValue() == null) {
-                    message.reply(CardUtil.headerAndSections(Theme.WARNING, "告知: 提交参数错误", message.getComponent() + " <--[HERE]"));
-                    return;
-                }
-                message.reply(CardUtil.headerAndSections(Theme.WARNING, "告知: 提交参数错误", userReturn.getValue().toString()));
-                return;
-            }
+
         }, helpList, CommandPermission.ADMIN);
     }
 }

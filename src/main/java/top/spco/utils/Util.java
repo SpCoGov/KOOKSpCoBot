@@ -18,8 +18,12 @@ package top.spco.utils;
 import cn.hutool.core.lang.Pair;
 import snw.jkook.entity.Guild;
 import snw.jkook.entity.User;
+import snw.jkook.entity.channel.VoiceChannel;
 import snw.jkook.message.Message;
+import snw.jkook.message.PrivateMessage;
+import snw.jkook.message.TextChannelMessage;
 import top.spco.SpCoBot;
+import top.spco.commands.CommandSource;
 
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -56,6 +60,15 @@ public class Util {
             if (register)
                 SpCoBot.getDatabase().insertData("insert into guild(id,warn) values (?,?)", guild.getId(), 3);
         }
+    }
+
+    public static CommandSource getMessageSource(Message message) {
+        if (message instanceof TextChannelMessage) {
+            return CommandSource.TEXT_CHANNEL;
+        } else if (message instanceof PrivateMessage) {
+            return CommandSource.PERSONAL_MESSAGE;
+        }
+        return null;
     }
 
     /**

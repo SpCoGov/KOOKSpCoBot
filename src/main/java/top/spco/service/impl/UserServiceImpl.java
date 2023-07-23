@@ -17,6 +17,7 @@ package top.spco.service.impl;
 
 import snw.jkook.entity.User;
 import top.spco.SpCoBot;
+import top.spco.domain.BotGuild;
 import top.spco.domain.BotUser;
 import top.spco.service.UserService;
 import top.spco.utils.Util;
@@ -40,5 +41,10 @@ public class UserServiceImpl implements UserService {
                         SpCoBot.getDatabase().selectInt("user", "smf_coin", "id", id));
         botUser.setUser(user);
         return botUser;
+    }
+
+    @Override
+    public void warnUser(BotUser botUser, BotGuild botGuild) {
+
     }
 }

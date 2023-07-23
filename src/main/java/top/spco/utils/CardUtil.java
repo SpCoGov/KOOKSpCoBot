@@ -28,6 +28,7 @@ import snw.jkook.message.component.card.module.HeaderModule;
 import snw.jkook.message.component.card.module.SectionModule;
 import snw.jkook.message.component.card.structure.Paragraph;
 import top.spco.commands.CommandPermission;
+import top.spco.commands.CommandSource;
 import top.spco.domain.BotUser;
 import top.spco.service.UserService;
 import top.spco.service.impl.UserServiceImpl;
@@ -128,5 +129,9 @@ public class CardUtil {
                 .addModule(DividerModule.INSTANCE)
                 .addModule(new SectionModule(new Paragraph(3, collection)))
                 .build();
+    }
+
+    public static MultipleCardComponent wrongCommandSource(CommandSource source) {
+        return CardUtil.headerAndSections(Theme.WARNING, "告知: 命令来源错误", String.format("该命令只能在%s中使用", source.getName()));
     }
 }

@@ -13,23 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package top.spco.service;
-
-import snw.jkook.entity.User;
-import top.spco.domain.BotGuild;
-import top.spco.domain.BotUser;
+package top.spco.commands;
 
 /**
  * <p>
- * Created on 2023/7/19 0019 3:11
+ * Created on 2023/7/23 0023 23:28
  * <p>
  *
  * @author SpCo
  * @version 1.0
  * @since 1.0
  */
-public interface UserService {
-    BotUser getBotUser(User user);
+public enum CommandSource {
+    PERSONAL_MESSAGE("私信"),
+    TEXT_CHANNEL("文字频道"),
+    BOTH("私信或文字频道");
+    private final String name;
 
-    void warnUser(BotUser botUser, BotGuild botGuild);
+    CommandSource(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

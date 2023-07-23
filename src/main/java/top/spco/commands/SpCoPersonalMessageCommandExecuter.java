@@ -13,23 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package top.spco.service;
+package top.spco.commands;
 
+import org.jetbrains.annotations.NotNull;
 import snw.jkook.entity.User;
-import top.spco.domain.BotGuild;
-import top.spco.domain.BotUser;
+import snw.jkook.message.PrivateMessage;
 
 /**
  * <p>
- * Created on 2023/7/19 0019 3:11
+ * Created on 2023/7/23 0023 20:21
  * <p>
  *
  * @author SpCo
  * @version 1.0
  * @since 1.0
  */
-public interface UserService {
-    BotUser getBotUser(User user);
-
-    void warnUser(BotUser botUser, BotGuild botGuild);
+public interface SpCoPersonalMessageCommandExecuter {
+    void onCommand(User sender, Object[] arguments, @NotNull PrivateMessage message);
 }

@@ -19,6 +19,7 @@ import snw.jkook.command.JKookCommand;
 import top.spco.service.UserService;
 import top.spco.service.impl.UserServiceImpl;
 import top.spco.utils.CardUtil;
+import top.spco.utils.Util;
 
 import java.util.Map;
 
@@ -32,18 +33,24 @@ import java.util.Map;
  * @since 1.0
  */
 public abstract class SpCoCommand {
+    private final CommandSource needSource;
     private final String rootName;
     private final JKookCommand jKookCommand;
     private final Map<String, String> helpList;
     private final CommandPermission needPermission;
     private static final UserService userService = new UserServiceImpl();
 
-    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList) {
+    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList, CommandSource needSource) {
         this.rootName = rootName;
+        this.needSource = needSource;
         this.needPermission = CommandPermission.NORMAL_USER;
         this.helpList = helpList;
         this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
             if (message == null) return;
+            if (Util.getMessageSource(message) != this.needSource && this.needSource != CommandSource.BOTH) {
+                message.reply(CardUtil.wrongCommandSource(this.needSource));
+                return;
+            }
             if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
                 message.reply(CardUtil.insufficientPermission(rootName, needPermission, userService.getBotUser(sender)));
                 return;
@@ -52,12 +59,17 @@ public abstract class SpCoCommand {
         });
     }
 
-    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList, CommandPermission needPermission, String... alias) {
+    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList, CommandSource needSource, CommandPermission needPermission, String... alias) {
         this.rootName = rootName;
+        this.needSource = needSource;
         this.needPermission = needPermission;
         this.helpList = helpList;
         this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
             if (message == null) return;
+            if (Util.getMessageSource(message) != this.needSource && this.needSource != CommandSource.BOTH) {
+                message.reply(CardUtil.wrongCommandSource(this.needSource));
+                return;
+            }
             if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
                 message.reply(CardUtil.insufficientPermission(rootName, needPermission, userService.getBotUser(sender)));
                 return;
@@ -69,12 +81,17 @@ public abstract class SpCoCommand {
         }
     }
 
-    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList, CommandPermission needPermission) {
+    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList, CommandSource needSource, CommandPermission needPermission) {
         this.rootName = rootName;
+        this.needSource = needSource;
         this.needPermission = needPermission;
         this.helpList = helpList;
         this.jKookCommand = new JKookCommand(this.rootName, '/').executesUser((sender, arguments, message) -> {
             if (message == null) return;
+            if (Util.getMessageSource(message) != this.needSource && this.needSource != CommandSource.BOTH) {
+                message.reply(CardUtil.wrongCommandSource(this.needSource));
+                return;
+            }
             if (userService.getBotUser(sender).getPermission() < needPermission.getPermission()) {
                 message.reply(CardUtil.insufficientPermission(rootName, needPermission, userService.getBotUser(sender)));
                 return;
@@ -83,8 +100,16 @@ public abstract class SpCoCommand {
         });
     }
 
-    public CommandPermission getNeedPermission() {
-        return needPermission;
+    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList, CommandPermission needPermission) {
+        this(rootName, executer, helpList, CommandSource.BOTH, needPermission);
+    }
+
+    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList, CommandPermission needPermission, String... alias) {
+        this(rootName, executer, helpList, CommandSource.BOTH, needPermission, alias);
+    }
+
+    public SpCoCommand(String rootName, SpCoCommandExecuter executer, Map<String, String> helpList) {
+        this(rootName, executer, helpList, CommandSource.BOTH);
     }
 
     public Map<String, String> getHelpList() {
@@ -94,5 +119,4 @@ public abstract class SpCoCommand {
     public JKookCommand getjKookCommand() {
         return jKookCommand;
     }
-
 }
